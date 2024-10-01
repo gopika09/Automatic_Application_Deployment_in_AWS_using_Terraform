@@ -2,6 +2,9 @@
 
 In this project, I harnessed the capabilities of Terraform Provisioners and AWS to automate the deployment of a simple Python Flask application on an Amazon EC2 instance. This solution streamlines the process of deploying applications in the AWS cloud, ensuring efficiency and consistency.
 
+## Overview :
+![diagram](https://github.com/gopika09/Python_Flask_App_Terraform_Code/blob/main/diagram.png)
+
 ## Features
 
 - **Lightweight Framework**: Developed using Flask, enabling rapid development and deployment.
