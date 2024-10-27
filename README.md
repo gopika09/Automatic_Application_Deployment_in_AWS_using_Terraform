@@ -46,16 +46,43 @@ Next, I launched an **EC2 instance** in one of the subnets using a Linux instanc
 
 **User Data Configuration:**
 
-```bash
-#!/bin/bash
-sudo yum update -y
-sudo yum install python3 -y
-pip3 install flask
+---
 
-  
-## Conclusion
-  
+I then created a target group for the Elastic Load Balancer, configuring it to use the HTTP protocol on port 5000. I also set up the health check parameters for the target group to ensure that only healthy instances receive traffic. Finally, I registered the EC2 instance with the target group, enabling load balancing for incoming requ
+
+![Security Groups](path_to_image/security_groups.png)
+
+---
+
+Next, I set up the load balancer as an internet-facing application type. I attached the appropriate security group and created a listener on port 80 using the HTTP protocol, linking it to the target group I had previously established. This configuration allows incoming traffic to be effectively routed to my EC2 instances through the load balancer.  
+
+![Security Groups](path_to_image/security_groups.png)
+
+---
+
+I then created a db subnet group and associated it with the public subnets. Following that, I launched an RDS instance using MySQL as the database engine, selecting the instance class as "db.t3.micro." I specified the database username, password, and initial database name, ensuring to attach the appropriate security group to the RDS instance for secure access.  
+
+![Security Groups](path_to_image/security_groups.png)
+
+---
+
+Next created a public hosted zone in Route 53, naming it "mysite.com." Additionally, I configured an A record in the hosted zone, setting it as an alias to the Elastic Load Balancer. This ensures that traffic directed to "mysite.com" is routed effectively to the load balancer, allowing seamless access to my application.  
+
+![Security Groups](path_to_image/security_groups.png)
+
+---
+
+## Results:
+
+## Conclusion:
+
 In this project, I successfully automated the deployment of a Python Flask application on an Amazon EC2 instance using Terraform and AWS. This solution highlights the efficiency of using Terraform Provisioners, streamlining the deployment process. Key features include a RESTful API, seamless database integration with Amazon RDS, and the scalability provided by AWS. I configured a secure Virtual Private Cloud (VPC), implemented an Elastic Load Balancer (ELB) for high availability, and utilized Route 53 for traffic management.Overall, this project demonstrates the effective use of modern development practices and cloud technologies, laying a strong foundation for future enhancements and scalability.
+
+
+
+
+
+
 
 
 
