@@ -1,6 +1,6 @@
-﻿# Python_Flask_App_Terraform_Code
+﻿# Automatic Application Deployment in AWS using Terraform
 
-In this project, I harnessed the capabilities of Terraform Provisioners and AWS to automate the deployment of a simple Python Flask application on an Amazon EC2 instance. This solution streamlines the process of deploying applications in the AWS cloud, ensuring efficiency and consistency.
+In this project, I harnessed the capabilities of Terraform Provisioners and AWS to automate the deployment of a simple Python Flask application on an Amazon EC2 instance. This solution streamlines the process of deploying applications in the AWS cloud, ensuring efficiency and consistency. By automating infrastructure provisioning, I eliminated manual intervention, reducing potential errors and accelerating deployment time. Additionally, the use of Terraform allowed for version-controlled, repeatable infrastructure setups, making scaling and updates easier to manage. This approach highlights the power of Infrastructure as Code (IaC) in delivering agile, reliable, and scalable cloud-based applications.
 
 ## Overview :
 ![diagram](https://github.com/gopika09/Python_Flask_App_Terraform_Code/blob/main/diagram.png)
@@ -21,47 +21,41 @@ In this project, I harnessed the capabilities of Terraform Provisioners and AWS 
 - **AWS VPC**: Provides a secure and isolated network environment for the application.
 - **Route 53**: AWS’s scalable domain name system (DNS) service for managing domain names and routing traffic.
 - **Elastic Load Balancer (ELB)**: Distributes incoming application traffic across multiple targets, ensuring high availability and reliability.
+- **Terraform**: An Infrastructure as Code (IaC) tool used to automate the deployment and management of AWS resources, including EC2 instances, security groups, and networking components, ensuring consistent and repeatable infrastructure provisioning.
+ 
 
 ## Steps to Deploy
 
-1. **Create a VPC**:
-   - Launch a new Virtual Private Cloud (VPC) to provide a secure and isolated network environment.
-   - Configure subnets (public and private) as needed for your application.
 
-2. **Launch EC2 Instance**:
-   - Choose an Amazon Machine Image (AMI) and instance type.
-   - Configure security groups to allow HTTP/HTTPS traffic and SSH access.
-   - Ensure the EC2 instance is launched within the created VPC and assigned to the appropriate subnet.
 
-3. **Set Up an Elastic Load Balancer (ELB)**:
-   - Create an ELB to distribute incoming application traffic across multiple EC2 instances.
-   - Configure health checks to ensure traffic is only routed to healthy instances.
-   - Update security groups to allow traffic from the ELB to the EC2 instances.
+In this project, I begin by defining a **Virtual Private Cloud (VPC)** in the ap-south-1 region, utilizing a variable for the CIDR block `11.0.0.0/16` to maintain flexibility in specifying the network's IP address range. Next, I establish two **public subnets** with CIDR blocks `11.0.1.0/24` and `11.0.2.0/24` in availability zones ap-south-1a and ap-south-1b, which facilitate automatic public IP assignment for resources within distinct public subnets. To enable connectivity to the internet, I create an **Internet Gateway** that links the public subnet to external networks. Additionally, I configure a **route table** and associate it with the public subnets to ensure efficient traffic routing.
 
-4. **Install Dependencies**:
-   - SSH into the EC2 instance.
-   - Install Python, Flask, and any other required libraries.
+![VPC Architecture](path_to_image/vpc.png)
 
-5. **Set Up RDS**:
-   - Launch a RDS instance for your database.
-   - Configure security settings to allow access from your EC2 instance and ensure it is in the same VPC.
+---
 
-6. **Deploy Flask Application**:
-   - Clone your application repository to the EC2 instance.
-   - Set environment variables and configure database connections.
-   - Run the Flask application.
+I then create two **security groups**: one for the EC2 instances, allowing SSH, HTTP, and HTTPS access, and another for the database, which permits traffic on port 3306. This configuration enhances security while ensuring that the necessary connections for application functionality are maintained.
 
-7. **Test the Application**:
-   - Use a web browser to verify that the application is running correctly through the ELB endpoint.
+![Security Groups](path_to_image/security_groups.png)
 
-8. **Configure Route 53 Domain**:
-   - Set up your domain in Route 53.
-   - Create an A record that points your domain to the ELB’s DNS name, allowing users to access your application through your custom domain.
+---
+
+Next, I launched an **EC2 instance** in one of the subnets using a Linux instance type, attaching it to the VPC and the appropriate security group. To enable secure access, I generated SSH keys using the command prompt with the `ssh-keygen -t rsa` command, incorporating the public key into the EC2 Terraform configuration. This setup ensures secure and seamless access to the instance, and I utilized **user data** to automatically install the Python Flask application on launch.
+
+---
+
+**User Data Configuration:**
+
+```bash
+#!/bin/bash
+sudo yum update -y
+sudo yum install python3 -y
+pip3 install flask
+
   
 ## Conclusion
   
-In this project, I successfully automated the deployment of a Python Flask application on an Amazon EC2 instance using Terraform and AWS. This solution highlights the efficiency of using Terraform Provisioners, streamlining the deployment process.
-Key features include a RESTful API, seamless database integration with Amazon RDS, and the scalability provided by AWS. I configured a secure Virtual Private Cloud (VPC), implemented an Elastic Load Balancer (ELB) for high availability, and utilized Route 53 for traffic management.Overall, this project demonstrates the effective use of modern development practices and cloud technologies, laying a strong foundation for future enhancements and scalability.
+In this project, I successfully automated the deployment of a Python Flask application on an Amazon EC2 instance using Terraform and AWS. This solution highlights the efficiency of using Terraform Provisioners, streamlining the deployment process. Key features include a RESTful API, seamless database integration with Amazon RDS, and the scalability provided by AWS. I configured a secure Virtual Private Cloud (VPC), implemented an Elastic Load Balancer (ELB) for high availability, and utilized Route 53 for traffic management.Overall, this project demonstrates the effective use of modern development practices and cloud technologies, laying a strong foundation for future enhancements and scalability.
 
 
 
