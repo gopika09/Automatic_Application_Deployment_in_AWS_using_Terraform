@@ -1,8 +1,8 @@
 # Specify the AWS provider and region
 provider "aws" {
   region     = "ap-south-1"  # Specify your desired AWS region
-  access_key = "**************"  # AWS Access Key
-  secret_key = "*******************"  # AWS Secret Key
+  access_key = "*******************"  # AWS Access Key
+  secret_key = "************************"  # AWS Secret Key
 }
 
 # Module for networking setup (VPC, subnets, etc.)
@@ -10,6 +10,8 @@ module "networking" {
   source              = "./networking"
   cidr_block          = var.cidr_block
   availability_zones  = var.availability_zones  # Availability zones for the VPC
+  public_cidr_block   = var.public_cidr_block
+  private_cidr_block  = var.private_cidr_block
 }
 
 # Module for creating security groups
@@ -23,7 +25,7 @@ module "ec2_instance" {
   source            = "./ec2_instance"
   ami               = var.ami  # AMI ID for the EC2 instance
   instance_type     = var.instance_type  # Type of EC2 instance
-  public_subnet_id  = module.networking.public_subnet_id[0]  # Public subnet ID for the instance
+  public_subnet_id  = module.networking.public_subnet_id  # Public subnet ID for the instance
   security_groups   = [module.security_groups.ec2_sg, module.security_groups.database_sg]  # Security groups
   public_key        = var.public_key  # Public SSH key for access
   user_data_install_python_app = templatefile("./template/install_python_app.sh", {})  # User data for instance initialization
@@ -58,5 +60,5 @@ module "route_53" {
 module "database" {
   source                = "./database"
   database_sg          = module.security_groups.database_sg  # Security group for the database
-  public_subnet_id      = tolist(module.networking.public_subnet_id)  # Public subnet IDs for the database
+  private_subnet_id    = module.networking.private_subnet_id
 }
