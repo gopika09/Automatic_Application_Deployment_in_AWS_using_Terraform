@@ -40,14 +40,6 @@ resource "aws_security_group" "ssh_http_https_sg" {
     description = "Allow access to Flask app"  # Description of the rule
   }
 
-  ingress {
-    from_port   = 443         # Allow HTTPS traffic on port 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTPS access from anywhere
-    description = "Allow HTTPS access"  # Description of the rule
-  }
-
   egress {
     from_port   = 0           # Allow all outgoing traffic
     to_port     = 0
