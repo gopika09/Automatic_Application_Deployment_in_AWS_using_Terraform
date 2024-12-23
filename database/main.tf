@@ -1,13 +1,13 @@
 # Variable to store the database security group
 variable "database_sg" {}
 
-# Variable to store the public subnet ID for the database
-variable "public_subnet_id" {}
+variable "private_subnet_id" {}
 
 # Create a DB Subnet Group for RDS
 resource "aws_db_subnet_group" "database_subnet_group" {
+  
   name       = "database-subnet-group"      # Name of the DB subnet group
-  subnet_ids = var.public_subnet_id          # Subnets to associate with the DB subnet group
+  subnet_ids = [var.private_subnet_id[0],  var.private_subnet_id[1]]        # Subnets to associate with the DB subnet group
 }
 
 # Create the RDS instance
