@@ -27,7 +27,7 @@ resource "aws_lb" "load_balancer" {
   load_balancer_type            = "application"                     # Specifies the type of Load Balancer
   security_groups               = [var.ec2_sg]                      # Reference to the security group for the Load Balancer
   enable_deletion_protection    = false                               # Allows deletion of the Load Balancer
-  subnets                       = var.subnet_ids                     # List of subnet IDs for Load Balancer placement
+  subnets                       = var.subnet_ids             # List of subnet IDs for Load Balancer placement
 
   tags = {
     Name = "load_balancer_for_ec2_instance"  # Tags for identifying the Load Balancer
