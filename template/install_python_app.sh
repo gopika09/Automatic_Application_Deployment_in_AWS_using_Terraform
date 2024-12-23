@@ -14,12 +14,26 @@ cd /home/ec2-user/your_flask_project  # Change directory to the cloned project
 pip3 install -r requirements.txt  # Install Python packages listed in requirements.txt
 
 # Create a systemd service for the Flask app
-cat <<EOL > /etc/systemd/system/flaskapp.service
+# Create a systemd service for the Flask app
+cat <<EOL | sudo tee /etc/systemd/system/flaskapp.service
 [Unit]
-Description=Flask App  # Description of the service
-After=network.target  # Ensure network is up before starting the service
+Description=Flask App
+After=network.target
 
 [Service]
-User=ec2-user  # Run the service as the ec2-user
-Group=ec2-user  # Group for the service
-WorkingDirectory=/home/ec2-user/your_fla
+User=ec2-user
+Group=ec2-user
+WorkingDirectory=/home/ec2-user/your_flask_project
+ExecStart=/usr/bin/python3 /home/ec2-user/your_flask_project/app.py --port=5000
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+# Reload systemd manager configuration
+sudo systemctl daemon-reload
+
+# Start and enable the Flask app service
+sudo systemctl start flaskapp
+sudo systemctl enable flaskapp
