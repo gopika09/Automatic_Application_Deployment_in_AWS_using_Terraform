@@ -2,7 +2,10 @@
 cidr_block = "11.0.0.0/16"  # Main VPC CIDR value
 
 # CIDR blocks for public subnets
-public_cidr_block = ["11.0.1.0/24", "11.0.2.0/24"]  # Public Subnet CIDR values
+public_cidr_block = ["11.0.1.0/24", "11.0.2.0/24"]  # Public Subnet CIDR value
+
+# CIDR blocks for private subnets
+private_cidr_block = ["11.0.3.0/24", "11.0.4.0/24"]  # Private Subnet CIDR value
 
 
 # Availability zones for resource deployment
