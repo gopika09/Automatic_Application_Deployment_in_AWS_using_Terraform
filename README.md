@@ -28,7 +28,7 @@ In this project, I harnessed the capabilities of Terraform Provisioners and AWS 
 
 
 
-In this project, I begin by defining a **Virtual Private Cloud (VPC)** in the ap-south-1 region, utilizing a variable for the CIDR block `11.0.0.0/16` to maintain flexibility in specifying the network's IP address range. Next, I establish two **public subnets** with CIDR blocks `11.0.1.0/24` and `11.0.2.0/24` in availability zones ap-south-1a and ap-south-1b, which facilitate automatic public IP assignment for resources within distinct public subnets. To enable connectivity to the internet, I create an **Internet Gateway** that links the public subnet to external networks. Additionally, I configure a **route table** and associate it with the public subnets to ensure efficient traffic routing.
+In this project, I begin by defining a **Virtual Private Cloud (VPC)** in the ap-south-1 region, utilizing a variable for the CIDR block `11.0.0.0/16` to maintain flexibility in specifying the network's IP address range. Next, I established two **public subnets** with CIDR blocks `11.0.1.0/24` and `11.0.2.0/24` and 2 private subnets `11.0.3.0/24` and `11.0.4.0/24` with CIDR blocks in availability zones ap-south-1a and ap-south-1b, which facilitate automatic public IP assignment for resources within distinct public subnets. To enable connectivity to the internet, I create an **Internet Gateway** that links the public subnet to external networks and NAT Gateway for private subnet to communicate with internet. Additionally, I configure a **route table** and associate it with the public and private subnets to ensure efficient traffic routing.
 
 ![diagram](https://github.com/gopika09/Automatic_Applicatio_Deployment_in_AWS_using_Terraform/blob/main/pictures/vpc.png)
 
@@ -36,7 +36,7 @@ In this project, I begin by defining a **Virtual Private Cloud (VPC)** in the ap
 
 
 
-I then create two **security groups**: one for the EC2 instances, allowing SSH, HTTP, and HTTPS access, and another for the database, which permits traffic on port 3306. This configuration enhances security while ensuring that the necessary connections for application functionality are maintained.
+I then create two **security groups**: one for the EC2 instances, allowing SSH, HTTP, and TCP access at port 5000(python flask app), and another for the database, which permits traffic on port 3306. This configuration enhances security while ensuring that the necessary connections for application functionality are maintained.
 
 ![diagram](https://github.com/gopika09/Automatic_Applicatio_Deployment_in_AWS_using_Terraform/blob/main/pictures/sg%20ec2.png)
 
@@ -65,7 +65,7 @@ Next, I set up the load balancer as an internet-facing application type. I attac
 
 
 
-I then created a db subnet group and associated it with the public subnets. Following that, I launched an RDS instance using MySQL as the database engine, selecting the instance class as "db.t3.micro." I specified the database username, password, and initial database name, ensuring to attach the appropriate security group to the RDS instance for secure access.  
+I then created a db subnet group and associated it with the private subnets. Following that, I launched an RDS instance using MySQL as the database engine, selecting the instance class as "db.t3.micro." I specified the database username, password, and initial database name, ensuring to attach the appropriate security group to the RDS instance for secure access.  
 
 ![diagram](https://github.com/gopika09/Automatic_Applicatio_Deployment_in_AWS_using_Terraform/blob/main/pictures/subnet%20group.png)
 
