@@ -25,7 +25,7 @@ output "ec2_example_id" {
 resource "aws_instance" "ec2_example" {
   ami           = var.ami                   # Specify the AMI ID for the instance
   instance_type = var.instance_type         # Specify the type of the instance
-  subnet_id     = var.public_subnet_id      # Reference to the public subnet ID
+  subnet_id     = var.public_subnet_id[0]      # Reference to the public subnet ID
   security_groups = var.security_groups      # Attach the specified security group
   user_data     = var.user_data_install_python_app  # User data for initialization
   key_name      = aws_key_pair.key_pair.key_name   # Reference to the key pair for SSH access
